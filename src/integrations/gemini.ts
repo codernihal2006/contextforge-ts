@@ -9,7 +9,8 @@ export class GeminiAnswerer implements Answerer {
     private readonly apiKey: string,
     private readonly model = "gemini-2.5-flash",
     private readonly fetcher: typeof fetch = fetch,
-    private readonly fallback: Answerer = new DeterministicAnswerer()
+    private readonly fallback: Answerer = new DeterministicAnswerer(),
+    private readonly baseUrl = "https://generativelanguage.googleapis.com"
   ) {}
 
   async answer(question: string, evidence: string[]): Promise<{ text: string; grounded: boolean }> {
@@ -27,20 +28,20 @@ export class GeminiAnswerer implements Answerer {
     ].join("\n\n");
 
     try {
-    const response = await this.fetcher(`https://generativelanguage.googleapis.com/v1beta/models/${this.model}:generateContent`, {
-      method: "POST",
-      headers: { "content-type": "application/json", "x-goog-api-key": this.apiKey },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: "Stay grounded in the supplied evidence. Never claim that evidence is missing when it directly answers the question." }] },
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0, maxOutputTokens: 300 }
-      })
-    });
-    if (!response.ok) return this.fallback.answer(question, evidence);
-    const payload = await response.json() as GeminiResponse;
-    const text = payload.candidates?.[0]?.content?.parts?.map((part) => part.text ?? "").join("").trim() ?? "";
-    if (!text || text === "INSUFFICIENT_EVIDENCE") return this.fallback.answer(question, evidence);
-    return { text, grounded: true };
+      const response = await this.fetcher(`${this.baseUrl}/v1beta/models/${this.model}:generateContent`, {
+        method: "POST",
+        headers: { "content-type": "application/json", "x-goog-api-key": this.apiKey },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: "Stay grounded in the supplied evidence. Never claim that evidence is missing when it directly answers the question." }] },
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0, maxOutputTokens: 300 }
+        })
+      });
+      if (!response.ok) return this.fallback.answer(question, evidence);
+      const payload = await response.json() as GeminiResponse;
+      const text = payload.candidates?.[0]?.content?.parts?.map((part) => part.text ?? "").join("").trim() ?? "";
+      if (!text || text === "INSUFFICIENT_EVIDENCE") return this.fallback.answer(question, evidence);
+      return { text, grounded: true };
     } catch {
       return this.fallback.answer(question, evidence);
     }

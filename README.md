@@ -73,7 +73,7 @@ src/
 └── http/            Express app and server entry point
 ```
 
-`services/` contains the application logic. `integrations/` isolates Gemini from the rest of the system. `http/` handles transport concerns, while `domain/` contains shared types.
+`services/` contains the application logic. `integrations/` isolates Gemini from the rest of the system. `http/` handles transport concerns, while `domain/` contains shared types. `data/fixtures.ts` contains the small sample knowledge base used by the demo and tests; production ingestion can replace it with external documents.
 
 ## Security
 

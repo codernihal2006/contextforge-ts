@@ -3,7 +3,8 @@ import { GeminiAnswerer } from "./integrations/gemini";
 import { loadConfig } from "./config/env";
 
 const config = loadConfig();
-const { orchestrator, evaluation } = createDemo(config.geminiApiKey ? new GeminiAnswerer(config.geminiApiKey, config.geminiModel) : undefined);
+const answerer = config.geminiApiKey ? new GeminiAnswerer(config.geminiApiKey, config.geminiModel, fetch, undefined, config.geminiBaseUrl) : undefined;
+const { orchestrator, evaluation } = createDemo(answerer);
 const { argv } = process;
 const question = argv.slice(2).join(" ") || "How do I rotate an API key?";
 async function main() {

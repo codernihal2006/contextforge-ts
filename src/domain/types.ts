@@ -15,7 +15,7 @@ export type SearchHit = {
   chunk: Chunk;
   score: number;
   rank: number;
-  channel: "lexical" | "vector" | "hybrid";
+  channel: "lexical" | "similarity" | "hybrid";
 };
 
 export type Citation = {
