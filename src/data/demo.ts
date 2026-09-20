@@ -1,9 +1,9 @@
-import { chunkDocument } from "./ingest";
-import { ContextForgeOrchestrator } from "./orchestrator";
-import { HybridRetriever } from "./retriever";
-import { evaluate } from "./evaluate";
+import { chunkDocument } from "../services/ingestion";
+import { ContextForgeOrchestrator, Answerer } from "../services/orchestrator";
+import { HybridRetriever } from "../services/retriever";
+import { evaluate } from "../services/evaluation";
 
-export function createDemo(answerer?: import("./orchestrator").Answerer) {
+export function createDemo(answerer?: Answerer) {
   const chunks = [
     ...chunkDocument({ source: "runbook.md", title: "API key rotation", tags: ["security"], text: "Rotate API keys every 90 days. Store secrets in the managed secret store. Revoke the old key only after the new key has been deployed and verified." }),
     ...chunkDocument({ source: "deploy.md", title: "Deployment checklist", tags: ["release"], text: "Run the test suite before deployment. Confirm environment variables are present. Monitor error rate and latency after the release." }),

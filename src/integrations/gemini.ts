@@ -1,4 +1,4 @@
-import { Answerer, DeterministicAnswerer } from "./orchestrator";
+import { Answerer, DeterministicAnswerer } from "../services/orchestrator";
 
 type GeminiResponse = {
   candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;

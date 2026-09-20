@@ -11,6 +11,7 @@ ContextForge is a TypeScript service for answering questions from a small, index
 - a safe refusal when the indexed material does not support an answer;
 - repeatable evaluation for retrieval hit rate, grounding, citation coverage, and latency;
 - a small HTTP API with health, question-answering, and evaluation endpoints.
+- an Express application with JSON parsing, validation, routing, and centralized error handling.
 
 The bundled answerer is deterministic, which makes the project runnable without a paid model API or network access. The `Answerer` interface also supports the Gemini adapter; retrieval and citation behavior remain independently testable.
 
@@ -61,7 +62,18 @@ curl http://localhost:8787/evaluate
 
 ## Project structure
 
-`ingest.ts` chunks documents, `retriever.ts` ranks evidence, `orchestrator.ts` coordinates the answer flow, `evaluate.ts` measures behavior, and `server.ts` exposes the service.
+```text
+src/
+├── config/          environment and runtime configuration
+├── data/            demo knowledge base
+├── domain/          shared domain types
+├── integrations/    Gemini client adapter
+├── services/        ingestion, retrieval, orchestration, evaluation
+├── utils/           text processing helpers
+└── http/            Express app and server entry point
+```
+
+`services/` contains the application logic. `integrations/` isolates Gemini from the rest of the system. `http/` handles transport concerns, while `domain/` contains shared types.
 
 ## Security
 

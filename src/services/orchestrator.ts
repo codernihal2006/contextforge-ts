@@ -1,4 +1,4 @@
-import { Answer, Citation, QueryPlan } from "./types";
+import { Answer, Citation, QueryPlan } from "../domain/types";
 import { HybridRetriever } from "./retriever";
 
 export interface Answerer {

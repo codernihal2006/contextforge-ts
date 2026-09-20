@@ -1,7 +1,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { createDemo } = require("../dist/demo.js");
-const { GeminiAnswerer } = require("../dist/gemini.js");
+const { createDemo } = require("../dist/data/demo.js");
+const { GeminiAnswerer } = require("../dist/integrations/gemini.js");
 
 test("answers with citations from the relevant source", async () => {
   const { orchestrator } = createDemo();

@@ -1,5 +1,5 @@
-import { Chunk, Metadata } from "./types";
-import { termFrequency } from "./text";
+import { Chunk, Metadata } from "../domain/types";
+import { termFrequency } from "../utils/text";
 
 export function chunkDocument(document: Metadata & { text: string }, size = 70, overlap = 12): Chunk[] {
   const words = document.text.trim().split(/\s+/).filter(Boolean);

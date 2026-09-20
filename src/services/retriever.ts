@@ -1,5 +1,5 @@
-import { Chunk, SearchHit } from "./types";
-import { lexicalScore, termFrequency } from "./text";
+import { Chunk, SearchHit } from "../domain/types";
+import { lexicalScore, termFrequency } from "../utils/text";
 
 export class HybridRetriever {
   constructor(private readonly chunks: Chunk[]) {}
